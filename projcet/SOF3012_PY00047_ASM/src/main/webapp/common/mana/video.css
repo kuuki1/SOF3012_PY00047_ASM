@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.video-form-container {
+    width: 60%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.video-form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.video-form-container label {
+    margin-top: 10px;
+}
+
+.video-form-container input,
+.video-form-container textarea {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.video-form-container button {
+    margin-right: 30px;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-edit {
+    color: #ffc107;
+}
+
+.btn-delete {
+    color: #dc3545;
+}
+
+.btn-share {
+    color: #28a745;
+}

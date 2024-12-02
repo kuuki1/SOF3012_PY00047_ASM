@@ -119,6 +119,12 @@ table tr:hover {
 
 <div class="container">
     <!-- Header Section -->
+    <div id="menu">
+        <button class="menu-button" onclick="navigateToVideoManagement()">Video Management</button>
+        <button class="menu-button" onclick="navigateToUserManagement()">User Management</button>
+        <button class="menu-button" onclick="navigeteToCategoryManagement()">Category Management</button>
+        <button class="menu-button" onclick="navigeteToShareManagement()">Share Management</button>
+    </div>
     <div class="header">
         <form action="${pageContext.request.contextPath}/share/management" method="POST">
             <label for="videoTitle">Select Video Title:</label>
@@ -147,7 +153,7 @@ table tr:hover {
                 <tr>
                     <td>${share.id}</td>
                     <td>${share.user.username}</td> <!-- Display user name -->
-                    <td><a href="${share.video.videoUrl}" target="_blank">${share.video.videoUrl}</a></td> <!-- Link to video -->
+                    <td>${share.video.videoUrl}</td> <!-- Link to video -->
                     <td>
 		                <fmt:formatDate value="${share.shareDate}" pattern="yyyy-MM-dd" />
 		            </td>
@@ -159,5 +165,19 @@ table tr:hover {
 </div>
 
 <%@ include file="/common/account/js.jsp"%>
+<script>
+    function navigateToUserManagement() {
+        window.location.href = '/SOF3012_PY00047_ASM/user/management';
+    }
+    function navigateToVideoManagement() {
+        window.location.href = '/SOF3012_PY00047_ASM/video/management';
+    }
+    function navigeteToCategoryManagement() {
+    	window.location.href = '/SOF3012_PY00047_ASM/category/management';	
+    }
+    function navigeteToShareManagement() {
+    	window.location.href = '/SOF3012_PY00047_ASM/share/management';	
+    }
+</script>
 </body>
 </html>

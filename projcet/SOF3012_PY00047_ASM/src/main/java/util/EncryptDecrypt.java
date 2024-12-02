@@ -68,11 +68,11 @@ public class EncryptDecrypt {
     }
 
 
-//    public static void main(String[] args) throws Exception {
-//        String encryptedmessage =  EncryptDecrypt.encrypt("user123");
-//        System.out.println(encryptedmessage);
-//        String decryptedMessage = EncryptDecrypt.decrypt(encryptedmessage);
-//        System.out.println(decryptedMessage);
-//    }
+    public static void main(String[] args) throws Exception {
+        String encryptedmessage =  EncryptDecrypt.encrypt("user123");
+        System.out.println(encryptedmessage);
+        String decryptedMessage = EncryptDecrypt.decrypt("tBJhh5u2Rkcrf2Q2Qxt2sw==javaxHaWXSB5Drl40+sS9G2VHGQ==javaxB2K2IBVIgmftKpnEffrreA==");
+        System.out.println(decryptedMessage);
+    }
 
 }

@@ -84,7 +84,7 @@ create table Comment
 );
 go
 
-select * from share
+select * from Users
 
 INSERT INTO Users (username, fullname, password, email, isAdmin, isActive)
 VALUES

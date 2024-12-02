@@ -146,9 +146,10 @@
     <%@ include file="/common/account/header.jsp"%>
     <div class="container">
         <div id="menu">
-            <button class="menu-button" onclick="navigateToVideoManagement()">Videos Management</button>
-            <button class="menu-button" onclick="navigateToUserManagement()">Users Management</button>
-            <button class="menu-button" onclick="navigeteToCategoryManagement()">Categories Management</button>
+            <button class="menu-button" onclick="navigateToVideoManagement()">Video Management</button>
+            <button class="menu-button" onclick="navigateToUserManagement()">User Management</button>
+            <button class="menu-button" onclick="navigeteToCategoryManagement()">Category Management</button>
+            <button class="menu-button" onclick="navigeteToShareManagement()">Share Management</button>
         </div>
     </div>
     <div class="form-container">
@@ -200,7 +201,10 @@
             window.location.href = '/SOF3012_PY00047_ASM/video/management';
         }
         function navigeteToCategoryManagement() {
-            window.location.href = '/SOF3012_PY00047_ASM/category/management';
+        	window.location.href = '/SOF3012_PY00047_ASM/category/management';	
+        }
+        function navigeteToShareManagement() {
+        	window.location.href = '/SOF3012_PY00047_ASM/share/management';	
         }
     </script>
 </body>

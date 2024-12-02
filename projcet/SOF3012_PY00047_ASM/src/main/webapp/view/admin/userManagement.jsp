@@ -170,14 +170,17 @@
     <%@ include file="/common/account/header.jsp"%>
     <div class="container">
         <div id="menu">
-            <button class="menu-button" onclick="navigateToVideoManagement()">Videos Management</button>
-            <button class="menu-button" onclick="navigateToUserManagement()">Users Management</button>
-            <button class="menu-button" onclick="navigeteToCategoryManagement()">Categories Management</button>
+            <button class="menu-button" onclick="navigateToVideoManagement()">Video Management</button>
+            <button class="menu-button" onclick="navigateToUserManagement()">User Management</button>
+            <button class="menu-button" onclick="navigeteToCategoryManagement()">Category Management</button>
+            <button class="menu-button" onclick="navigeteToShareManagement()">Share Management</button>
         </div>
     </div>
     <div class="form-container">
         <h2>Users Management</h2>
         <form method="post">
+        	<input type="hidden" name="id" value="${user != null ? user.id : ''}">
+        	
 		    <label>Username:</label> 
 		    <input type="text" name="username" value="${user != null ? user.username : ''}"> 
 		    
@@ -241,15 +244,18 @@
     </table>
     <%@ include file="/common/account/js.jsp"%>
     <script>
-	    function navigateToUserManagement() {
-	        window.location.href = '/SOF3012_PY00047_ASM/user/management';
-	    }
-	    function navigateToVideoManagement() {
-	        window.location.href = '/SOF3012_PY00047_ASM/video/management';
-	    }
-	    function navigeteToCategoryManagement() {
-	    	window.location.href = '/SOF3012_PY00047_ASM/category/management';	
-	    }
-	</script>
+        function navigateToUserManagement() {
+            window.location.href = '/SOF3012_PY00047_ASM/user/management';
+        }
+        function navigateToVideoManagement() {
+            window.location.href = '/SOF3012_PY00047_ASM/video/management';
+        }
+        function navigeteToCategoryManagement() {
+        	window.location.href = '/SOF3012_PY00047_ASM/category/management';	
+        }
+        function navigeteToShareManagement() {
+        	window.location.href = '/SOF3012_PY00047_ASM/share/management';	
+        }
+    </script>
 </body>
 </html>

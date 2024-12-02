@@ -135,7 +135,9 @@ public class CategoryController extends HttpServlet {
     }
 
     private void doPostCreateCategory(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String name = req.getParameter("name");
+    	req.setCharacterEncoding("UTF-8");
+		resp.setCharacterEncoding("UTF-8");
+    	String name = req.getParameter("name");
         if (name == null || name.isEmpty()) {
             req.setAttribute("message", "Category name cannot be empty!");
         } else {
@@ -148,7 +150,9 @@ public class CategoryController extends HttpServlet {
     }
 
     private void doPostUpdateCategory(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String idParam = req.getParameter("id");
+    	req.setCharacterEncoding("UTF-8");
+		resp.setCharacterEncoding("UTF-8");
+    	String idParam = req.getParameter("id");
         String name = req.getParameter("name");
         if (idParam == null || name == null || name.isEmpty()) {
             req.setAttribute("message", "Invalid category details!");
@@ -167,7 +171,9 @@ public class CategoryController extends HttpServlet {
     }
 
     private void doPostDeleteCategory(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String idParam = req.getParameter("id");
+    	req.setCharacterEncoding("UTF-8");
+		resp.setCharacterEncoding("UTF-8");
+    	String idParam = req.getParameter("id");
         if (idParam == null) {
             req.setAttribute("message", "Invalid category ID!");
         } else {

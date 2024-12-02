@@ -12,7 +12,7 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #181818;
+        background-color: #f8f9fa;
         color: #FFFFFF;
         margin: 0;
         padding: 0;

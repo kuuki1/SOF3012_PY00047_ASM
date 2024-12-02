@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglist.jsp"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE>
 <html>
 <head>
@@ -99,7 +100,7 @@
 			    <br>
             </div>
 
-			<c:if test="${not empty video.videoUrl}">
+			<c:if test="${not empty sessionScope.currentUser}">
 			    <button id="likeButton" class="btn ${flagLikeBtn ? 'btn-danger' : 'btn-primary'}"
 			            onclick="toggleLike('${video.videoUrl}')">
 			        <c:choose>
@@ -113,7 +114,7 @@
 			    </button>
 			</c:if>
 			
-			<c:if test="${not empty video.videoUrl}">
+			<c:if test="${not empty sessionScope.currentUser}">
 			    <button id="shareButton" class="btn btn-success" onclick="toggleShareForm()">Share</button>
 			</c:if>
 			
@@ -135,7 +136,8 @@
                         <div class="comment">
                             <div class="comment-header">
                                 <span class="comment-username">${comment.user.username}</span>
-                                <small class="text-muted">${comment.commentDate}</small>
+                                <!-- <small class="text-muted" pattern="yyyy-MM-dd">${comment.commentDate}</small>  -->
+                                <fmt:formatDate value="${comment.commentDate}" pattern="yyyy-MM-dd" />
                             </div>
                             <div class="comment-content">
                                 <p>${comment.content}</p>

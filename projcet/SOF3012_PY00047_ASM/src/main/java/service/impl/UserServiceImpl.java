@@ -151,8 +151,8 @@ public class UserServiceImpl implements UserService{
 	    User user = new User();
 	    user.setEmail(email);
 	    user.setFullname(name);
-	    user.setUsername(email); // Hoặc tạo username tự động
-	    user.setIsAdmin(Boolean.FALSE); // Mặc định không phải admin
+	    user.setUsername(email);
+	    user.setIsAdmin(Boolean.FALSE);
 	    user.setIsActive(Boolean.TRUE);
 	    user.setPassword("12345678");
 	    dao.create(user);

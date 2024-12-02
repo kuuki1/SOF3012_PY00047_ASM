@@ -256,12 +256,14 @@ public class videoController extends HttpServlet {
 			int id = Integer.parseInt(req.getParameter("id"));
 			String title = req.getParameter("title");
 			String videoUrl = req.getParameter("videoUrl");
-			String videoHref = videoUrl.split("v=")[1].split("&")[0];
 			Part poster = req.getPart("poster");
 //			int categoryId = Integer.parseInt(req.getParameter("categoryid"));
 			String description = req.getParameter("description");
 			Video video = videoService.findById(id);
+			
 			if (video != null) {
+				video.setVideoUrl("https://www.youtube.com/watch?v="+videoUrl);
+				String videoHref = video.getVideoUrl().split("v=")[1].split("&")[0];
 				if (poster.getSize() == 0) {
                     video.setPoster(video.getPoster());
                 } else {

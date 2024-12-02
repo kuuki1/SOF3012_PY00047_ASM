@@ -23,6 +23,7 @@ import service.EmailService;
 import service.UserService;
 import service.impl.EmailServiceImpl;
 import service.impl.UserServiceImpl;
+import util.EncryptDecrypt;
 
 @WebServlet({
     "/login",
@@ -99,18 +100,8 @@ public class UserController extends HttpServlet{
 		}else if(path.equals("/regiser")) {
 			doPossRegiser(session, req, resp);
 		}else if(path.equals("/user/management/update")) {
-			User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
-	    	if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
-	    		resp.sendRedirect(req.getContextPath() + "/index");
-	    		return;
-	    	}
 			doPostUpdate(req, resp);
 		}else if(path.equals("/user/management/delete")) {
-			User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
-	    	if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
-	    		resp.sendRedirect(req.getContextPath() + "/index");
-	    		return;
-	    	}
 			doPostDelete(req, resp);
 		}else if(path.equals("/user/management/reset")) {
 			User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
@@ -317,9 +308,11 @@ public class UserController extends HttpServlet{
             if (user != null) {
                 user.setUsername(username);
                 user.setFullname(fullname);
-                user.setPassword(password);
+                String encryptedmessage =  EncryptDecrypt.encrypt(password);
+                user.setPassword(encryptedmessage);
                 user.setEmail(email);
                 user.setIsAdmin(isAdmin);
+                user.setIsActive(Boolean.TRUE);
                 userService.update(user);
                 req.setAttribute("message", "User updated successfully!");
             } else {

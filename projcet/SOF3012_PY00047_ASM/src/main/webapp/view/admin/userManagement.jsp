@@ -156,6 +156,10 @@
         table td a:hover {
             text-decoration: underline;
         }
+        
+        .container_table{
+        	margin-left: 100px;
+        }
 
         /* Message styling */
         .message {
@@ -214,34 +218,34 @@
     </div>
 
     <h2>User List</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Full Name</th>
-                <th>Password</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="user" items="${userList}">
-                <tr>
-                    <td>${user.id}</td>
-                    <td>${user.username}</td>
-                    <td>${user.fullname}</td>
-                    <td class="hidetext">${user.password}</td>
-                    <td>${user.email}</td>
-                    <td>${user.isAdmin ? 'Admin' : 'User'}</td>
-                    <td>
-                        <a href="${pageContext.request.contextPath}/user/management/edit/${user.id}">Edit</a>
-                    </td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+    <div class="container_table">
+    	<table>
+	        <thead>
+	            <tr>
+	                <th>Username</th>
+	                <th>Full Name</th>
+	                <th>Password</th>
+	                <th>Email</th>
+	                <th>Role</th>
+	                <th>Action</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <c:forEach var="user" items="${userList}">
+	                <tr>
+	                    <td>${user.username}</td>
+	                    <td>${user.fullname}</td>
+	                    <td class="hidetext">${user.password}</td>
+	                    <td>${user.email}</td>
+	                    <td>${user.isAdmin ? 'Admin' : 'User'}</td>
+	                    <td>
+	                        <a href="${pageContext.request.contextPath}/user/management/edit/${user.id}">Edit</a>
+	                    </td>
+	                </tr>
+	            </c:forEach>
+	        </tbody>
+	    </table>
+    </div>
     <%@ include file="/common/account/js.jsp"%>
     <script>
         function navigateToUserManagement() {

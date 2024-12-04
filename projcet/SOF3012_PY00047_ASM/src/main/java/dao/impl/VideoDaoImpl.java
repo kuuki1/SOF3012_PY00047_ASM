@@ -33,7 +33,7 @@ public class VideoDaoImpl extends Dao<Video> implements VideoDao {
     
     @Override
     public List<Video> findByCategoryId(Integer categoryId, int pageNumber, int pageSize) {
-        String jpql = "SELECT v FROM Video v WHERE v.category.id = :categoryId";
+        String jpql = "SELECT v FROM Video v WHERE v.category.id = :categoryId AND v.isActive = true";
         return entityManager.createQuery(jpql, Video.class)
                 .setParameter("categoryId", categoryId)
                 .setFirstResult((pageNumber - 1) * pageSize)

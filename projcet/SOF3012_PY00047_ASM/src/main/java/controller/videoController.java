@@ -193,6 +193,13 @@ public class videoController extends HttpServlet {
 			throws ServletException, IOException {
 		Video video = videoService.findByHref(href);
 		req.setAttribute("video", video);
+		Category category = categoryService.getCategoryById(video.getCategory().getId()); 
+		if(category == null) {
+			System.out.println("not find categoryId: "+category.getId());
+			return;
+		}
+		List<Video> videos = videoService.findByCategoryId(category.getId());
+		req.setAttribute("videos", videos);
 		videoService.incrementViewCount(video);
 		List<Comment> comments = new CommentServiceImpl().findCommentByVideo(video.getVideoUrl());
 		req.setAttribute("comments", comments);
@@ -267,11 +274,11 @@ public class videoController extends HttpServlet {
 				if (poster.getSize() == 0) {
                     video.setPoster(video.getPoster());
                 } else {
-                	 String fileName = poster.getSubmittedFileName();
-                     String logicPath = "IMG/" + video.getVideoUrl() + "_" + fileName;
-                     String physicPath = req.getServletContext().getRealPath("/" + logicPath);
-                     poster.write(physicPath);
-                     video.setPoster(logicPath);
+                	String fileName = poster.getSubmittedFileName();
+                    String logicPath = "IMG/" + video.getVideoUrl() + "_" + fileName;
+                    String physicPath = req.getServletContext().getRealPath("/" + logicPath);
+                    poster.write(physicPath);
+                    video.setPoster(logicPath);
                 }
 				video.setTitle(title);
 				video.setVideoUrl(videoHref);

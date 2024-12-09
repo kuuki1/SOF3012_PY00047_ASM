@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Create New Video</title>
+    <%@ include file="/common/head.jsp" %>
 	<style>
-		/* Định dạng chung cho form */
 .form-group {
     margin-bottom: 15px;
 }
@@ -40,13 +40,11 @@ button[type="submit"]:hover {
     background-color: #45a049;
 }
 		
-	</style>
-    <%@ include file="/common/account/head.jsp"%>
-    <%@ include file="/common/account/css.jsp"%>
+</style>
+
 </head>
 <body>
-    <%@ include file="/common/account/header.jsp"%>
-
+	<%@ include file="/common/header.jsp" %>
     <div id="mainContent">
         <section class="main-banner">
             <div class="container-fluid">
@@ -96,7 +94,6 @@ button[type="submit"]:hover {
             </div>
         </section>
     </div>
-
-    <%@ include file="/common/account/js.jsp"%>
+    <%@ include file="/common/footer.jsp"%>
 </body>
 </html>

@@ -27,7 +27,7 @@ public class VideoDaoImpl extends Dao<Video> implements VideoDao {
     
     @Override
     public List<Video> findByCategoryId(Integer categoryId) {
-        String sql = "SELECT v FROM Video v WHERE v.category.id = ?1";
+        String sql = "SELECT v FROM Video v WHERE v.category.id = ?1 AND v.isActive = true";
         return super.findMany(Video.class, sql, categoryId);
     }
     

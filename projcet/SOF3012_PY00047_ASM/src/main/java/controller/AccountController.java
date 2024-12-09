@@ -42,15 +42,15 @@ public class AccountController extends HttpServlet{
 				if(pass.equals(oldpass)) {
 					if(newPass.equals(RNPass)) {
 						userService.updatePass(email, RNPass);
+						req.setAttribute("successMessage", "Password has been updated successfully!");
 						doGetAccount(req, resp);
-						req.setAttribute("successMessage", "Mật khẩu đã được cập nhật thành công!");
 						return;
 					}else {
-						req.setAttribute("errorMessage", "Mật khẩu mới và nhập lại không khớp!");
+						req.setAttribute("errorMessage", "New and re-entered passwords do not match!");
 						doGetAccount(req, resp);
 					}
 				}else {
-					req.setAttribute("errorMessage", "Mật khẩu không khớp!");
+					req.setAttribute("errorMessage", "Passwords do not match!");
 					doGetAccount(req, resp);
 				}
 				doGetAccount(req, resp);

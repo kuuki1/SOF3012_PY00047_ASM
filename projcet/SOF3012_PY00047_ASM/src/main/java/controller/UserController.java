@@ -30,7 +30,7 @@ import util.EncryptDecrypt;
     "/google-login",
     "/google-callback",
     "/logout",
-    "/regiser",
+    "/register",
     "/user/management",
     "/user/management/edit/*",
     "/user/management/create",
@@ -63,7 +63,7 @@ public class UserController extends HttpServlet{
 	        doGetLogin(req, resp);
 	    } else if (path.equals("/logout")) {
 	        doGetLogout(session, req, resp);
-	    } else if (path.equals("/regiser")) {
+	    } else if (path.equals("/register")) {
 	        doGetRegiser(req, resp);
 	    } else if (path.equals("/user/management")) {
 	    	User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
@@ -164,9 +164,17 @@ public class UserController extends HttpServlet{
 
 	
 	private void doGetManagement(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    List<User> userList = userService.findAll();
-	    req.setAttribute("userList", userList);
-	    req.getRequestDispatcher("/view/admin/userManagement.jsp").forward(req, resp);
+		HttpSession session = req.getSession();
+		User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
+		if(currentUser != null && currentUser.getIsAdmin() == Boolean.TRUE) {
+			List<User> userList = userService.findAll();
+		    req.setAttribute("userList", userList);
+		    req.getRequestDispatcher("/view/admin/userManagement.jsp").forward(req, resp);
+		} else if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
+			req.getRequestDispatcher("/view/user/Management.jsp").forward(req, resp);
+		} else {
+			resp.sendRedirect(req.getContextPath() + "/login");
+		}
 	}
 
 	
@@ -242,7 +250,8 @@ public class UserController extends HttpServlet{
 			session.setAttribute(SessionAttr.CURRENT_USER, user);
 			resp.sendRedirect("index");
 		}else {
-			resp.sendRedirect("login");
+			req.setAttribute("errorMessage", "Password or account mismatch!");
+			doGetLogin(req, resp);
 		}
 	}
 	
@@ -290,7 +299,7 @@ public class UserController extends HttpServlet{
         } catch (Exception e) {
             req.setAttribute("error", "Failed to update user: " + e.getMessage());
         }
-        doGetManagement(req, resp);
+		resp.sendRedirect(req.getContextPath() + "/user/management");
     }
 	
 	private void doPostUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -321,7 +330,7 @@ public class UserController extends HttpServlet{
         } catch (Exception e) {
             req.setAttribute("error", "Failed to update user: " + e.getMessage());
         }
-        doGetManagement(req, resp);
+		resp.sendRedirect(req.getContextPath() + "/user/management");
     }
 
     private void doPostDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -332,10 +341,10 @@ public class UserController extends HttpServlet{
         } catch (Exception e) {
             req.setAttribute("error", "Failed to delete user: " + e.getMessage());
         }
-        doGetManagement(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/user/management");
     }
 
     private void doPostReset(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGetManagement(req, resp);
+    	resp.sendRedirect(req.getContextPath() + "/user/management");
     }
 }

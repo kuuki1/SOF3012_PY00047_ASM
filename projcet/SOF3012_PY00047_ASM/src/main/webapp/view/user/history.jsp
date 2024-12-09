@@ -7,8 +7,6 @@
 <meta charset="UTF-8">
 <title>Account Page</title>
 <%@ include file="/common/head.jsp" %>
-<%@ include file="/common/account/head.jsp"%>
-<%@ include file="/common/account/css.jsp"%>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -107,7 +105,7 @@
 
 </head>
 <body>
-	<%@ include file="/common/account/header.jsp"%>
+	<%@ include file="/common/header.jsp" %>
 	<div class="container">
 	    <ul class="list-group list-group-flush">
 	        <c:forEach items="${videos}" var="video">
@@ -132,6 +130,6 @@
 	        </c:forEach>
 	    </ul>
 	</div>
-	<%@ include file="/common/account/js.jsp"%>
+	<%@ include file="/common/footer.jsp"%>
 </body>
 </html>

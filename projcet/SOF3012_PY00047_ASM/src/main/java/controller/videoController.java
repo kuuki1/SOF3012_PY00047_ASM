@@ -167,26 +167,25 @@ public class videoController extends HttpServlet {
 		    req.setAttribute("videoList", videoList);
 		    req.getRequestDispatcher("/view/admin/videoManagement.jsp").forward(req, resp);
 		} else if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
-			List<Video> videoList = videoService.findVideoByUserId(currentUser.getId());
-			for (Video video : videoList) {
-		        System.out.println("Video ID: " + video.getId());
-		        if (video.getCategory() == null) {
-		            System.out.println("Danh mục bị thiếu cho video: " + video.getId());
-		            video.setCategory(new Category(0, "Uncategorized", null));
-		        }
-		    }
-		    req.setAttribute("videoList", videoList);
 			req.getRequestDispatcher("/view/user/Management.jsp").forward(req, resp);
-		}else {
-			resp.sendRedirect(req.getContextPath() + "/index");
+		} else {
+			resp.sendRedirect(req.getContextPath() + "/login");
 		}
 	}
 	
 	private void doGetCreate(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		List<Category> categoryList = categoryService.getAllCategories();
-		req.setAttribute("categoryList", categoryList);
-		req.getRequestDispatcher("/view/user/createVideo.jsp").forward(req, resp);
+		HttpSession session = req.getSession();
+		User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
+		if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
+			req.getRequestDispatcher("/view/user/Management.jsp").forward(req, resp);
+		}else if(currentUser != null && currentUser.getIsAdmin() == Boolean.TRUE){
+			List<Category> categoryList = categoryService.getAllCategories();
+			req.setAttribute("categoryList", categoryList);
+			req.getRequestDispatcher("/view/user/createVideo.jsp").forward(req, resp);
+		} else {
+			resp.sendRedirect(req.getContextPath() + "/login");
+		}
 	}
 
 	private void doGetWatch(HttpSession session, String href, HttpServletRequest req, HttpServletResponse resp)
@@ -199,6 +198,7 @@ public class videoController extends HttpServlet {
 			return;
 		}
 		List<Video> videos = videoService.findByCategoryId(category.getId());
+		videos.removeIf(v -> v.getId() == video.getId()); 
 		req.setAttribute("videos", videos);
 		videoService.incrementViewCount(video);
 		List<Comment> comments = new CommentServiceImpl().findCommentByVideo(video.getVideoUrl());
@@ -224,8 +224,7 @@ public class videoController extends HttpServlet {
 
 		User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
 		if (currentUser == null) {
-			resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			resp.getWriter().write("{\"error\": \"User not logged in\"}");
+			resp.sendRedirect(req.getContextPath() + "/login");
 			return;
 		}
 
@@ -295,7 +294,7 @@ public class videoController extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		doGetManagement(req, resp);
+		resp.sendRedirect(req.getContextPath() + "/video/management");
 	}
 
 	private void doPostDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -308,11 +307,11 @@ public class videoController extends HttpServlet {
 			req.setAttribute("error", "Failed to delete video: " + e.getMessage());
 			e.printStackTrace();
 		}
-		doGetManagement(req, resp);
+		resp.sendRedirect(req.getContextPath() + "/video/management");
 	}
 
 	private void doPostreset(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doGetManagement(req, resp);
+		resp.sendRedirect(req.getContextPath() + "/video/management");
 	}
 	
 	private void doPostCreate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

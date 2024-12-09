@@ -4,146 +4,158 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Account Page</title>
-    <%@ include file="/common/account/head.jsp"%>
-    <%@ include file="/common/account/css.jsp"%>
+    <title>Categories Management</title>
+    <%@ include file="/common/head.jsp" %>
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            color: #495057;
+        }
+
         .container {
-            margin-top: 80px;
-            text-align: center;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+		
+		.menu {
+		    margin-bottom: 20px;
+		}
+		
+		.menu-button {
+		    padding: 12px 25px;
+		    background-color: #007bff;
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s;
+		    margin-right: 10px;
+		    font-size: 1rem;
+		}
+		
+		.menu-button:hover {
+		    background-color: #0056b3;
+		}
+		
+        .category-form-container form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
         }
 
-        #menu {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .category-form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            color: #495057;
+        }
+
+        .category-form-container input {
+            width: 100%;
+            padding: 12px;
             margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #f1f3f5;
+            transition: border-color 0.3s ease;
         }
 
-        .menu-button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
+        .category-form-container input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .category-form-container .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+        }
+
+        .category-form-container .btn-group button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background-color 0.3s ease;
+            width: 32%;
         }
 
-        .menu-button:hover {
+        .btn-create {
+            background-color: #0d6efd;
+        }
+
+        .btn-create:hover {
             background-color: #0056b3;
         }
 
-        .form-container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            color: #007bff;
-            margin-bottom: 20px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 12px 20px;
-            margin: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        button.btn-create {
+        .btn-update {
             background-color: #28a745;
-            color: white;
         }
 
-        button.btn-update {
-            background-color: #007bff;
-            color: white;
+        .btn-update:hover {
+            background-color: #218838;
         }
 
-        button.btn-delete {
+        .btn-delete {
             background-color: #dc3545;
-            color: white;
         }
 
-        button.btn-reset {
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .btn-reset {
             background-color: #ffc107;
-            color: white;
+        }
+
+        .btn-reset:hover {
+            background-color: #e0a800;
         }
 
         table {
             width: 100%;
-            margin-top: 20px;
             border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        table th, table td {
+            padding: 18px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
 
         table th {
             background-color: #007bff;
             color: white;
-            padding: 12px;
-            text-align: left;
+            text-transform: uppercase;
+            font-size: 1rem;
         }
 
-        table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
 
         table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        table td a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        table td a:hover {
-            text-decoration: underline;
-        }
-
-        .message {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 16px;
-            color: #28a745;
+            background-color: #eef3fa;
+            transition: background-color 0.3s;
         }
     </style>
 </head>
 <body>
-    <%@ include file="/common/account/header.jsp"%>
+    <%@ include file="/common/header.jsp" %>
+
     <div class="container">
         <div id="menu">
             <button class="menu-button" onclick="navigateToVideoManagement()">Video Management</button>
@@ -151,48 +163,50 @@
             <button class="menu-button" onclick="navigeteToCategoryManagement()">Category Management</button>
             <button class="menu-button" onclick="navigeteToShareManagement()">Share Management</button>
         </div>
-    </div>
-    <div class="form-container">
         <h2>Categories Management</h2>
-        <form method="post">
-        	<input type="hidden" name="id" value="${category != null ? category.id : ''}">
-        	
-            <label>Name:</label>
-            <input type="text" name="name" value="${category != null ? category.name : ''}">
-            
-            <div class="btn-group">
-                <button type="submit" class="btn-create" formaction="${pageContext.request.contextPath}/category/management/create">Create</button>
-                <button type="submit" class="btn-update" formaction="${pageContext.request.contextPath}/category/management/update">Update</button>
-                <button type="submit" class="btn-delete" formaction="${pageContext.request.contextPath}/category/management/delete">Delete</button>
-                <button type="submit" class="btn-reset" formaction="${pageContext.request.contextPath}/category/management/reset">Reset</button>
-            </div>
-        </form>
-    </div>
-    <div class="message">
-        <p>${message}</p>
-    </div>
-    <h2>Category List</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="category" items="${categories}">
+
+        <div class="category-form-container">
+            <form method="post">
+                <h3>${category == null ? "Add New Category" : "Edit Category"}</h3>
+                <input type="hidden" name="id" value="${category != null ? category.id : ''}">
+
+                <label>Category Name:</label>
+                <input type="text" name="name" value="${category != null ? category.name : ''}">
+
+                <div class="btn-group">
+                    <button type="submit" class="btn-create" formaction="${pageContext.request.contextPath}/category/management/create">Create</button>
+                    <button type="submit" class="btn-update" formaction="${pageContext.request.contextPath}/category/management/update">Update</button>
+                    <button type="submit" class="btn-delete" formaction="${pageContext.request.contextPath}/category/management/delete">Delete</button>
+                    <button type="submit" class="btn-reset" formaction="${pageContext.request.contextPath}/category/management/reset">Reset</button>
+                </div>
+            </form>
+        </div>
+
+        <hr>
+
+        <h2>Category List</h2>
+        <table>
+            <thead>
                 <tr>
-                    <td>${category.id}</td>
-                    <td>${category.name}</td>
-                    <td>
-                        <a href="${pageContext.request.contextPath}/category/management/edit/${category.id}">Edit</a>
-                    </td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Action</th>
                 </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-    <%@ include file="/common/account/js.jsp"%>
+            </thead>
+            <tbody>
+                <c:forEach var="category" items="${categories}">
+                    <tr>
+                        <td>${category.id}</td>
+                        <td>${category.name}</td>
+                        <td><a href="${pageContext.request.contextPath}/category/management/edit/${category.id}" class="btn-edit">Edit</a></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
+
+    <%@ include file="/common/footer.jsp"%>
+
     <script>
         function navigateToUserManagement() {
             window.location.href = '/SOF3012_PY00047_ASM/user/management';
@@ -201,10 +215,10 @@
             window.location.href = '/SOF3012_PY00047_ASM/video/management';
         }
         function navigeteToCategoryManagement() {
-        	window.location.href = '/SOF3012_PY00047_ASM/category/management';	
+            window.location.href = '/SOF3012_PY00047_ASM/category/management';
         }
         function navigeteToShareManagement() {
-        	window.location.href = '/SOF3012_PY00047_ASM/share/management';	
+            window.location.href = '/SOF3012_PY00047_ASM/share/management';
         }
     </script>
 </body>

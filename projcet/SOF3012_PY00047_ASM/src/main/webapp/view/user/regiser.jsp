@@ -40,7 +40,11 @@
 	        </div>
 	    </div>  
 	</div>
-
+	
+	<c:if test="${not empty errorMessage}">
+		<div style="color: red; text-align: center; margin-bottom: 20px;">
+			${errorMessage}</div>
+	</c:if>
 <%@ include file="/common/footer.jsp" %>
 </body>
 

@@ -44,20 +44,11 @@ public class IndexController extends HttpServlet{
 		HttpSession session = req.getSession();
 		User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
 		if(currentUser != null && currentUser.getIsAdmin() == Boolean.TRUE) {
-			req.getRequestDispatcher("/view/admin/Management.jsp").forward(req, resp);
+			resp.sendRedirect(req.getContextPath() + "/video/management");
 		} else if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
-			List<Video> videoList = videoService.findVideoByUserId(currentUser.getId());
-			for (Video video : videoList) {
-		        System.out.println("Video ID: " + video.getId());
-		        if (video.getCategory() == null) {
-		            System.out.println("Danh mục bị thiếu cho video: " + video.getId());
-		            video.setCategory(new Category(0, "Uncategorized", null));
-		        }
-		    }
-		    req.setAttribute("videoList", videoList);
 			req.getRequestDispatcher("/view/user/Management.jsp").forward(req, resp);
 		}else {
-			resp.sendRedirect(req.getContextPath() + "/index");
+			resp.sendRedirect(req.getContextPath() + "/login");
 		}
 	}
 	

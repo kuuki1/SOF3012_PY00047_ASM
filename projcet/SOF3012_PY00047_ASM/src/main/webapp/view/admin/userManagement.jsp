@@ -4,249 +4,241 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Account Page</title>
-<%--     <link rel="stylesheet" href="${pageContext.request.contextPath}/common/mana/style.css"> --%>
-    <script src="${pageContext.request.contextPath}/common/mana/main.js"></script>
-    <%@ include file="/common/account/head.jsp"%>
-    <%@ include file="/common/account/css.jsp"%>
+    <title>Users Management</title>
+    <%@ include file="/common/head.jsp" %>
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            color: #495057;
+        }
+
         .container {
-            margin-top: 80px;
-            text-align: center;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .video-form-container form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .video-form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            color: #495057;
+        }
+
+        .video-form-container input,
+        .video-form-container select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #f1f3f5;
+            transition: border-color 0.3s ease;
+        }
+
+        .video-form-container input:focus,
+        .video-form-container select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .video-form-container .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+        }
+
+        .video-form-container .btn-group button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 32%;
         }
         
-        .hidetext { 
-       	 	-webkit-text-security: disc;
+        .video-form-container .btn-create {
+            background-color: #0d6efd;
         }
 
-        #menu {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .menu-button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .menu-button:hover {
+        .video-form-container .btn-create:hover {
             background-color: #0056b3;
         }
 
-        /* Nội dung của mỗi tab */
-        .tab-content {
-            display: none;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background-color: #f8f9fa;
+        .video-form-container .btn-update {
+            background-color: #28a745;
         }
 
-        .tab-content.active {
-            display: block;
+        .video-form-container .btn-update:hover {
+            background-color: #218838;
         }
 
-        /* Form container */
-        .form-container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        .video-form-container .btn-delete {
+            background-color: #dc3545;
         }
 
-        h2 {
-            text-align: center;
-            color: #007bff;
-            margin-bottom: 20px;
+        .video-form-container .btn-delete:hover {
+            background-color: #c82333;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .video-form-container .btn-reset {
+            background-color: #ffc107;
         }
 
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
-        input[type="password"],
-        input[type="email"],
-        select {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 12px 20px;
-            margin: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            opacity: 0.9;
+        .video-form-container .btn-reset:hover {
+            background-color: #e0a800;
         }
         
-        button.btn-create {
-        	background-color: #28a745;
-            color: white;
-        }
+        .menu {
+		    margin-bottom: 20px;
+		}
+		
+		.menu-button {
+		    padding: 12px 25px;
+		    background-color: #007bff;
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s;
+		    margin-right: 10px;
+		    font-size: 1rem;
+		}
+		
+		.menu-button:hover {
+		    background-color: #0056b3;
+		}
 
-        button.btn-update {
-            background-color: #007bff;
-            color: white;
-        }
-
-        button.btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        button.btn-reset {
-            background-color: #ffc107;
-            color: white;
-        }
-
-        /* Table styling */
         table {
             width: 100%;
-            margin-top: 20px;
             border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        table th, table td {
+            padding: 18px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
 
         table th {
             background-color: #007bff;
             color: white;
-            padding: 12px;
-            text-align: left;
+            text-transform: uppercase;
+            font-size: 1rem;
         }
 
-        table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
 
         table tr:hover {
-            background-color: #f1f1f1;
+            background-color: #eef3fa;
+            transition: background-color 0.3s;
         }
 
-        table td a {
-            color: #007bff;
-            text-decoration: none;
+        table .hidetext {
+            -webkit-text-security: disc;
         }
 
-        table td a:hover {
-            text-decoration: underline;
-        }
-        
-        .container_table{
-        	margin-left: 100px;
-        }
+        @media (max-width: 768px) {
+            .video-form-container .btn-group {
+                flex-direction: column;
+            }
 
-        /* Message styling */
-        .message {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 16px;
-            color: #28a745;
+            .video-form-container .btn-group button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <%@ include file="/common/account/header.jsp"%>
+    <%@ include file="/common/header.jsp" %>
+
     <div class="container">
-        <div id="menu">
+    	<div id="menu">
             <button class="menu-button" onclick="navigateToVideoManagement()">Video Management</button>
             <button class="menu-button" onclick="navigateToUserManagement()">User Management</button>
             <button class="menu-button" onclick="navigeteToCategoryManagement()">Category Management</button>
             <button class="menu-button" onclick="navigeteToShareManagement()">Share Management</button>
         </div>
-    </div>
-    <div class="form-container">
         <h2>Users Management</h2>
-        <form method="post">
-        	<input type="hidden" name="id" value="${user != null ? user.id : ''}">
-        	
-		    <label>Username:</label> 
-		    <input type="text" name="username" value="${user != null ? user.username : ''}"> 
-		    
-		    <label>Full Name:</label> 
-		    <input type="text" name="fullname" value="${user != null ? user.fullname : ''}"> 
-		    
-		    <label>Password:</label> 
-		    <input type="password" name="password" value="${user != null ? user.password : ''}"> 
-		    
-		    <label>Email:</label> 
-		    <input type="email" name="email" value="${user != null ? user.email : ''}"> 
-		    
-		    <label>Role:</label>
-		    <select name="isAdmin">
-		        <option value="true" ${user != null && user.isAdmin ? 'selected' : ''}>Admin</option>
-		        <option value="false" ${user != null && !user.isAdmin ? 'selected' : ''}>User</option>
-		    </select>
-		
-		    <div class="btn-group">
-		    	<button type="submit" class="btn-create" formaction="${pageContext.request.contextPath}/user/management/create">Create</button>
-		        <button type="submit" class="btn-update" formaction="${pageContext.request.contextPath}/user/management/update">Update</button>
-		        <button type="submit" class="btn-delete" formaction="${pageContext.request.contextPath}/user/management/delete">Delete</button>
-		        <button type="submit" class="btn-reset" formaction="${pageContext.request.contextPath}/user/management/reset">Reset</button>
-		    </div>
-		</form>
 
-    </div>
+        <div class="video-form-container">
+            <form method="post">
+                <h3>${user == null ? "Add New User" : "Edit User"}</h3>
+                <input type="hidden" name="id" value="${user != null ? user.id : ''}">
 
-    <div class="message">
-        <p>${message}</p>
-    </div>
+                <label>Username:</label>
+                <input type="text" name="username" value="${user != null ? user.username : ''}">
 
-    <h2>User List</h2>
-    <div class="container_table">
-    	<table>
-	        <thead>
-	            <tr>
-	                <th>Username</th>
-	                <th>Full Name</th>
-	                <th>Password</th>
-	                <th>Email</th>
-	                <th>Role</th>
-	                <th>Action</th>
-	            </tr>
-	        </thead>
-	        <tbody>
-	            <c:forEach var="user" items="${userList}">
-	                <tr>
-	                    <td>${user.username}</td>
-	                    <td>${user.fullname}</td>
-	                    <td class="hidetext">${user.password}</td>
-	                    <td>${user.email}</td>
-	                    <td>${user.isAdmin ? 'Admin' : 'User'}</td>
-	                    <td>
-	                        <a href="${pageContext.request.contextPath}/user/management/edit/${user.id}">Edit</a>
-	                    </td>
-	                </tr>
-	            </c:forEach>
-	        </tbody>
-	    </table>
+                <label>Full Name:</label>
+                <input type="text" name="fullname" value="${user != null ? user.fullname : ''}">
+
+                <label>Password:</label>
+                <input type="password" name="password" value="${user != null ? user.password : ''}">
+
+                <label>Email:</label>
+                <input type="email" name="email" value="${user != null ? user.email : ''}">
+
+                <label>Role:</label>
+                <select name="isAdmin">
+                    <option value="true" ${user != null && user.isAdmin ? 'selected' : ''}>Admin</option>
+                    <option value="false" ${user != null && !user.isAdmin ? 'selected' : ''}>User</option>
+                </select>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn-create" formaction="${pageContext.request.contextPath}/user/management/create">Create</button>
+                    <button type="submit" class="btn-update" formaction="${pageContext.request.contextPath}/user/management/update">Update</button>
+                    <button type="submit" class="btn-delete" formaction="${pageContext.request.contextPath}/user/management/delete">Delete</button>
+                    <button type="submit" class="btn-reset" formaction="${pageContext.request.contextPath}/user/management/reset">Reset</button>
+                </div>
+            </form>
+        </div>
+
+        <hr>
+
+        <h2>User List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="user" items="${userList}">
+                    <tr>
+                        <td>${user.username}</td>
+                        <td>${user.fullname}</td>
+                        <td>${user.email}</td>
+                        <td>${user.isAdmin ? 'Admin' : 'User'}</td>
+                        <td><a href="${pageContext.request.contextPath}/user/management/edit/${user.id}" class="btn-edit">Edit</a></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
     </div>
-    <%@ include file="/common/account/js.jsp"%>
     <script>
         function navigateToUserManagement() {
             window.location.href = '/SOF3012_PY00047_ASM/user/management';
@@ -261,5 +253,7 @@
         	window.location.href = '/SOF3012_PY00047_ASM/share/management';	
         }
     </script>
+
+    <%@ include file="/common/footer.jsp"%>
 </body>
 </html>

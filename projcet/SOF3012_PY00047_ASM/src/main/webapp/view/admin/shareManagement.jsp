@@ -6,34 +6,27 @@
 <head>
 <meta charset="UTF-8">
 <title>Share Management</title>
-<%@ include file="/common/account/head.jsp"%>
-<%@ include file="/common/account/css.jsp"%>
+<%@ include file="/common/head.jsp" %>
 <style>
-/* General styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
-    color: #333;
+    color: #495057;
 }
 
 .container {
-    max-width: 90%;
+    max-width: 1200px;
     margin: 40px auto;
-    margin-top: 80px;
     padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
 }
 
-/* Header section */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .header label {
@@ -43,10 +36,10 @@ body {
 }
 
 .header select {
-    padding: 8px 12px;
+    padding: 10px 15px;
     font-size: 1rem;
-    width: 60%;
-    border: 1px solid #ddd;
+    width: 70%;
+    border: 1px solid #ced4da;
     border-radius: 5px;
     background-color: #fff;
     transition: border-color 0.3s;
@@ -58,7 +51,7 @@ body {
 }
 
 .btn-search {
-    padding: 10px 20px;
+    padding: 12px 20px;
     font-size: 1rem;
     color: #fff;
     background-color: #007bff;
@@ -77,10 +70,13 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 table th, table td {
-    padding: 15px;
+    padding: 18px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -89,6 +85,7 @@ table th {
     background-color: #007bff;
     color: white;
     text-transform: uppercase;
+    font-size: 1rem;
 }
 
 table tr:nth-child(even) {
@@ -100,6 +97,26 @@ table tr:hover {
     transition: background-color 0.3s;
 }
 
+.menu {
+    margin-bottom: 20px;
+}
+
+.menu-button {
+    padding: 12px 25px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+    font-size: 1rem;
+}
+
+.menu-button:hover {
+    background-color: #0056b3;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .header {
@@ -107,15 +124,22 @@ table tr:hover {
         align-items: flex-start;
     }
 
-    .header select, .btn-search {
+    .header select,
+    .btn-search {
         width: 100%;
         margin-top: 10px;
     }
+
+    .menu-button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
 </style>
+
 </head>
 <body>
-<%@ include file="/common/account/header.jsp"%>
+<%@ include file="/common/header.jsp" %>
 
 <div class="container">
     <!-- Header Section -->
@@ -164,7 +188,7 @@ table tr:hover {
     </table>
 </div>
 
-<%@ include file="/common/account/js.jsp"%>
+<%@ include file="/common/footer.jsp"%>
 <script>
     function navigateToUserManagement() {
         window.location.href = '/SOF3012_PY00047_ASM/user/management';

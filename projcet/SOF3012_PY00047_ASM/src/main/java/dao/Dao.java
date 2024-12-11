@@ -1,5 +1,6 @@
 package dao;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -14,15 +15,39 @@ public class Dao<T> {
         return entityManager.find(clazz, id);
     }
 
+    private boolean hasIsActiveField(Class<T> clazz) {
+        try {
+            Field field = clazz.getDeclaredField("isActive");
+            return field != null;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
+
+    private boolean hasViewCountField(Class<T> clazz) {
+        try {
+            Field field = clazz.getDeclaredField("viewCount");
+            return field != null;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
+    
     public List<T> findAll(Class<T> clazz, boolean existIsActive) {
         EntityManager em = JpaUtil.getEntityManager();
         List<T> resultList = null;
         try {
             String entityName = clazz.getSimpleName();
             StringBuilder sql = new StringBuilder("SELECT o FROM ").append(entityName).append(" o");
-            if (existIsActive) {
+
+            if (hasIsActiveField(clazz) && existIsActive) {
                 sql.append(" WHERE o.isActive = true");
             }
+
+            if (hasViewCountField(clazz)) {
+                sql.append(" ORDER BY o.viewCount DESC");
+            }
+
             TypedQuery<T> query = em.createQuery(sql.toString(), clazz);
             resultList = query.getResultList();
         } catch (Exception e) {
@@ -38,9 +63,15 @@ public class Dao<T> {
     public List<T> findAll(Class<T> clazz, boolean existIsActive, int pageNumber, int pageSize) {
         String entityName = clazz.getSimpleName();
         StringBuilder sql = new StringBuilder("SELECT o FROM ").append(entityName).append(" o");
-        if (existIsActive) {
+
+        if (hasIsActiveField(clazz) && existIsActive) {
             sql.append(" WHERE o.isActive = true");
         }
+
+        if (hasViewCountField(clazz)) {
+            sql.append(" ORDER BY o.viewCount DESC");
+        }
+
         TypedQuery<T> query = entityManager.createQuery(sql.toString(), clazz);
         query.setFirstResult((pageNumber - 1) * pageSize);
         query.setMaxResults(pageSize);

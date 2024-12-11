@@ -15,7 +15,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    private String fullname; // Thêm thuộc tính fullname
+    private String fullname; 
 
     @Column(nullable = false)
     private String password;
@@ -24,10 +24,10 @@ public class User {
     private String email;
 
     @Column(name = "isAdmin", nullable = false)
-    private Boolean isAdmin; // Sửa kiểu từ boolean thành Boolean
+    private Boolean isAdmin; 
 
     @Column(name = "isActive", nullable = false)
-    private Boolean isActive; // Sửa kiểu từ boolean thành Boolean
+    private Boolean isActive; 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<History> histories;

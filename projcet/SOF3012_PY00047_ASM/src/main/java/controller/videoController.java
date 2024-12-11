@@ -94,20 +94,15 @@ public class videoController extends HttpServlet {
 		HttpSession session = req.getSession();
 		User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
 		if(currentUser != null && currentUser.getIsAdmin() == Boolean.TRUE) {
-			List<Video> videoList = videoService.findAll();
+			List<Video> videoList = videoService.findVideoByUserId(currentUser.getId());
 			req.setAttribute("videoList", videoList);
 			if (pathInfo != null && pathInfo.startsWith("/")) {
 				try {
 					String idStr = pathInfo.substring(1);
 					int id = Integer.parseInt(idStr);
-
 					Video video = videoService.findById(id);
-					
 					if (video != null) {
-						String href = "https://www.youtube.com/watch?v="+ video.getVideoUrl();
 						req.setAttribute("video", video);
-						req.setAttribute("videoUrl", href);
-						System.out.println("Video found: " + video.getTitle() + "|| href: " + href);
 					} else {
 						System.err.println("Video not found for ID: " + id);
 						req.setAttribute("video", null);
@@ -121,29 +116,7 @@ public class videoController extends HttpServlet {
 			}
 			req.getRequestDispatcher("/view/admin/videoManagement.jsp").forward(req, resp);
 		} else if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
-			List<Video> videoList = videoService.findVideoByUserId(currentUser.getId());
-			req.setAttribute("videoList", videoList);
-			if (pathInfo != null && pathInfo.startsWith("/")) {
-				try {
-					String idStr = pathInfo.substring(1);
-					int id = Integer.parseInt(idStr);
-					Video video = videoService.findById(id);
-					if (video != null) {
-						String href = "https://www.youtube.com/watch?v="+ video.getVideoUrl();
-						video.setVideoUrl(href);
-						req.setAttribute("video", video);
-						System.out.println("Video found: " + video.getTitle() + "|| href: " + href);
-					} else {
-						System.err.println("Video not found for ID: " + id);
-						req.setAttribute("video", null);
-					}
-				} catch (NumberFormatException e) {
-					System.err.println("Invalid video ID format: " + e.getMessage());
-					req.setAttribute("video", null);
-				}
-			} else {
-				req.setAttribute("video", null);
-			}
+			
 			req.getRequestDispatcher("/view/user/Management.jsp").forward(req, resp);
 		}else {
 			resp.sendRedirect(req.getContextPath() + "/index");
@@ -268,17 +241,21 @@ public class videoController extends HttpServlet {
 			Video video = videoService.findById(id);
 			
 			if (video != null) {
-				video.setVideoUrl("https://www.youtube.com/watch?v="+videoUrl);
+				video.setVideoUrl("https://www.youtube.com/watch?v=" + videoUrl);
 				String videoHref = video.getVideoUrl().split("v=")[1].split("&")[0];
-				if (poster.getSize() == 0) {
-                    video.setPoster(video.getPoster());
-                } else {
-                	String fileName = poster.getSubmittedFileName();
-                    String logicPath = "IMG/" + video.getVideoUrl() + "_" + fileName;
-                    String physicPath = req.getServletContext().getRealPath("/" + logicPath);
-                    poster.write(physicPath);
-                    video.setPoster(logicPath);
-                }
+				if (poster.getSize() > 0) {
+	                String fileName = poster.getSubmittedFileName();
+	                String logicPath = "IMG/" + videoHref + "_" + fileName;
+	                String physicPath = req.getServletContext().getRealPath("/" + logicPath);
+	                File imgFolder = new File(req.getServletContext().getRealPath("/IMG"));
+	                if (!imgFolder.exists()) {
+	                    imgFolder.mkdirs();
+	                }
+	                poster.write(physicPath);
+	                video.setPoster(logicPath);
+	            } else {
+	                video.setPoster(video.getPoster());
+	            }
 				video.setTitle(title);
 				video.setVideoUrl(videoHref);
 				video.setDescription(description);
@@ -368,7 +345,7 @@ public class videoController extends HttpServlet {
 	        newVideo.setCommentCount(0);
 	        videoService.create(newVideo);
 	        req.setAttribute("message", "Video created successfully!");
-	        doGetManagement(req, resp);
+	        resp.sendRedirect(req.getContextPath() + "/video/management");
 	    } catch (NumberFormatException e) {
 	        req.setAttribute("error", "Invalid input data: " + e.getMessage());
 	        doGetCreate(req, resp);

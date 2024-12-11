@@ -34,14 +34,14 @@ public class ForgotPasswordController extends HttpServlet {
         User existingUser = userService.findByEmail(email);
         if (existingUser == null) {
             session.setAttribute("errorMessage", "Email không tồn tại trong hệ thống.");
-            resp.sendRedirect(req.getContextPath() + "/forgotPassword.jsp");
+            resp.sendRedirect(req.getContextPath() + "/forgotPassword");
             return;
         }
 
         User updatedUser = userService.resetPass(email);
         if (updatedUser == null) {
             session.setAttribute("errorMessage", "Không thể đặt lại mật khẩu. Vui lòng thử lại.");
-            resp.sendRedirect(req.getContextPath() + "/forgotPassword.jsp");
+            resp.sendRedirect(req.getContextPath() + "/forgotPassword");
             return;
         }
         try {

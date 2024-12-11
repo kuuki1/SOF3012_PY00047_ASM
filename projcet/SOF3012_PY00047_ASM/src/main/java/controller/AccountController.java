@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +41,13 @@ public class AccountController extends HttpServlet{
 				String email = currentUser.getEmail();
 				System.out.println(email);
 				String oldpass = EncryptDecrypt.decrypt(currentUser.getPassword());
+				
 				if(pass.equals(oldpass)) {
+					if(!isValidPassword(newPass)) {
+						req.setAttribute("errorMessage", "Password has at least 8 characters!");
+						doGetAccount(req, resp);
+						return;
+					}
 					if(newPass.equals(RNPass)) {
 						userService.updatePass(email, RNPass);
 						req.setAttribute("successMessage", "Password has been updated successfully!");
@@ -71,4 +79,11 @@ public class AccountController extends HttpServlet{
 			resp.sendRedirect("index");
 		}
 	}
+	
+	public static boolean isValidPassword(String password) {
+        String regex = "^.{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
 }

@@ -36,11 +36,15 @@
             <button class="menu-button" onclick="navigateToVideoManagement()">Video Management</button>
             <button class="menu-button" onclick="navigateToUserManagement()">User Management</button>
             <button class="menu-button" onclick="navigeteToCategoryManagement()">Category Management</button>
-            <button class="menu-button" onclick="navigeteToShareManagement()">Share Management</button>
+            <button class="menu-button" onclick="navigeteToShareManagement()">Share Statistics</button>
+            <button class="menu-button" onclick="navigeteToFavoriteStatistics()">Favorites Statistics</button>
+            <button class="menu-button" onclick="navigeteToFavoriteUsers()">Favorites Users Statistics</button>
         </div>
+        
+        <br></br>
     </div>
 
-    <script>
+<script>
         function navigateToUserManagement() {
             window.location.href = '/SOF3012_PY00047_ASM/user/management';
         }
@@ -52,6 +56,12 @@
         }
         function navigeteToShareManagement() {
         	window.location.href = '/SOF3012_PY00047_ASM/share/management';	
+        }
+        function navigeteToFavoriteStatistics() {
+        	window.location.href = '/SOF3012_PY00047_ASM/favorite/statistics';	
+        }
+        function navigeteToFavoriteUsers() {
+        	window.location.href = '/SOF3012_PY00047_ASM/favorite/user/statistics?videoId=1';	
         }
     </script>
     <%@ include file="/common/footer.jsp"%>

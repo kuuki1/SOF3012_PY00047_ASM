@@ -17,10 +17,10 @@ body {
 }
 
 .container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-}
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
 
 .header {
     display: flex;
@@ -97,20 +97,21 @@ table tr:hover {
     transition: background-color 0.3s;
 }
 
-.menu {
+#menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
     margin-bottom: 20px;
 }
 
 .menu-button {
-    padding: 12px 25px;
+    padding: 10px 20px;
     background-color: #007bff;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 10px;
-    font-size: 1rem;
+    transition: background 0.3s;
 }
 
 .menu-button:hover {
@@ -129,11 +130,6 @@ table tr:hover {
         width: 100%;
         margin-top: 10px;
     }
-
-    .menu-button {
-        width: 100%;
-        margin-bottom: 10px;
-    }
 }
 </style>
 
@@ -144,11 +140,15 @@ table tr:hover {
 <div class="container">
     <!-- Header Section -->
     <div id="menu">
-        <button class="menu-button" onclick="navigateToVideoManagement()">Video Management</button>
-        <button class="menu-button" onclick="navigateToUserManagement()">User Management</button>
-        <button class="menu-button" onclick="navigeteToCategoryManagement()">Category Management</button>
-        <button class="menu-button" onclick="navigeteToShareManagement()">Share Management</button>
-    </div>
+            <button class="menu-button" onclick="navigateToVideoManagement()">Video Management</button>
+            <button class="menu-button" onclick="navigateToUserManagement()">User Management</button>
+            <button class="menu-button" onclick="navigeteToCategoryManagement()">Category Management</button>
+            <button class="menu-button" onclick="navigeteToShareManagement()">Share Statistics</button>
+            <button class="menu-button" onclick="navigeteToFavoriteStatistics()">Favorites Statistics</button>
+            <button class="menu-button" onclick="navigeteToFavoriteUsers()">Favorites Users Statistics</button>
+        </div>
+        
+        <br></br>
     <div class="header">
         <form action="${pageContext.request.contextPath}/share/management" method="POST">
             <label for="videoTitle">Select Video Title:</label>
@@ -190,18 +190,24 @@ table tr:hover {
 
 <%@ include file="/common/footer.jsp"%>
 <script>
-    function navigateToUserManagement() {
-        window.location.href = '/SOF3012_PY00047_ASM/user/management';
-    }
-    function navigateToVideoManagement() {
-        window.location.href = '/SOF3012_PY00047_ASM/video/management';
-    }
-    function navigeteToCategoryManagement() {
-    	window.location.href = '/SOF3012_PY00047_ASM/category/management';	
-    }
-    function navigeteToShareManagement() {
-    	window.location.href = '/SOF3012_PY00047_ASM/share/management';	
-    }
-</script>
+        function navigateToUserManagement() {
+            window.location.href = '/SOF3012_PY00047_ASM/user/management';
+        }
+        function navigateToVideoManagement() {
+            window.location.href = '/SOF3012_PY00047_ASM/video/management';
+        }
+        function navigeteToCategoryManagement() {
+        	window.location.href = '/SOF3012_PY00047_ASM/category/management';	
+        }
+        function navigeteToShareManagement() {
+        	window.location.href = '/SOF3012_PY00047_ASM/share/management';	
+        }
+        function navigeteToFavoriteStatistics() {
+        	window.location.href = '/SOF3012_PY00047_ASM/favorite/statistics';	
+        }
+        function navigeteToFavoriteUsers() {
+        	window.location.href = '/SOF3012_PY00047_ASM/favorite/user/statistics?videoId=1';	
+        }
+    </script>
 </body>
 </html>

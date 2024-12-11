@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,7 +35,6 @@ import util.EncryptDecrypt;
     "/register",
     "/user/management",
     "/user/management/edit/*",
-    "/user/management/create",
     "/user/management/update",
     "/user/management/delete",
     "/user/management/reset"
@@ -97,11 +98,21 @@ public class UserController extends HttpServlet{
 		String path = req.getServletPath();
 		if(path.equals("/login")) {
 			doPossLogin(session, req, resp);
-		}else if(path.equals("/regiser")) {
+		}else if(path.equals("/register")) {
 			doPossRegiser(session, req, resp);
 		}else if(path.equals("/user/management/update")) {
+			User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
+	    	if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
+	    		resp.sendRedirect(req.getContextPath() + "/index");
+	    		return;
+	    	}
 			doPostUpdate(req, resp);
 		}else if(path.equals("/user/management/delete")) {
+			User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
+	    	if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
+	    		resp.sendRedirect(req.getContextPath() + "/index");
+	    		return;
+	    	}
 			doPostDelete(req, resp);
 		}else if(path.equals("/user/management/reset")) {
 			User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
@@ -110,13 +121,6 @@ public class UserController extends HttpServlet{
 	    		return;
 	    	}
 			doPostReset(req, resp);
-		}else if(path.equals("/user/management/create")) {
-			User currentUser = (User) session.getAttribute(SessionAttr.CURRENT_USER);
-	    	if(currentUser != null && currentUser.getIsAdmin() == Boolean.FALSE) {
-	    		resp.sendRedirect(req.getContextPath() + "/index");
-	    		return;
-	    	}
-			doPostCreate(req, resp);
 		}
 	}
 	
@@ -136,7 +140,7 @@ public class UserController extends HttpServlet{
 	    		resp.sendRedirect(req.getContextPath() + "/index");
 	    		return;
 	    	}else if(currentUser == null) {
-	    		resp.sendRedirect(req.getContextPath() + "/index");
+	    		resp.sendRedirect(req.getContextPath() + "/login");
 	    		return;
 	    	}
 	        try {
@@ -263,11 +267,35 @@ public class UserController extends HttpServlet{
 		String fullname = req.getParameter("Fullname");
         String password = req.getParameter("Password");
         String cfmPass = req.getParameter("cfmPass");
+        User userEx = userService.findByUsername(username);
+        
+        if(userEx != null) {
+        	req.setAttribute("errorMessage", "Username already exists!");
+			req.getRequestDispatcher("/view/user/regiser.jsp").forward(req, resp);
+			return;
+        }
+        if(!isValidName(fullname)) {
+        	req.setAttribute("errorMessage", "Fullname is not valid!");
+			req.getRequestDispatcher("/view/user/regiser.jsp").forward(req, resp);
+			return;
+        }
+        if(!isValidPassword(password)) {
+        	req.setAttribute("errorMessage", "Password has at least 8 characters!");
+			req.getRequestDispatcher("/view/user/regiser.jsp").forward(req, resp);
+			return;
+        }
 		if(!cfmPass.equals(password)) {
+			req.setAttribute("errorMessage", "Password does not match!");
+			req.getRequestDispatcher("/view/user/regiser.jsp").forward(req, resp);
 			return;
 		}
-		String email = req.getParameter("Email");
 		
+		String email = req.getParameter("Email");
+		if(!isValidGmail(email)) {
+			req.setAttribute("errorMessage", "Invalid email!");
+			req.getRequestDispatcher("/view/user/regiser.jsp").forward(req, resp);
+			return;
+		}
 		User user = userService.regiser(username, fullname, cfmPass, email);
 		if (user != null) {
 			emailService.sendEmail(getServletContext(), user, "welcome");
@@ -275,32 +303,9 @@ public class UserController extends HttpServlet{
 		    resp.sendRedirect("index");
 		} else {
 		    System.out.println("Failed to register user: " + username);
-		    resp.sendRedirect("regiser");
+		    resp.sendRedirect("register");
 		}
 	}
-	private void doPostCreate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		resp.setCharacterEncoding("UTF-8");
-		try {
-            String username = req.getParameter("username");
-            String fullname = req.getParameter("fullname");
-            String password = req.getParameter("password");
-            String email = req.getParameter("email");
-            boolean isAdmin = Boolean.parseBoolean(req.getParameter("isAdmin"));
-            User user = new User();
-            user.setUsername(username);
-            user.setFullname(fullname);
-            user.setPassword(password);
-            user.setEmail(email);
-            user.setIsAdmin(isAdmin);
-            userService.regiser(username, fullname, password, email, isAdmin);
-            emailService.sendEmail(getServletContext(), user, "welcome");
-            req.setAttribute("message", "User create successfully!");
-        } catch (Exception e) {
-            req.setAttribute("error", "Failed to update user: " + e.getMessage());
-        }
-		resp.sendRedirect(req.getContextPath() + "/user/management");
-    }
 	
 	private void doPostUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
@@ -309,26 +314,36 @@ public class UserController extends HttpServlet{
             int id = Integer.parseInt(req.getParameter("id"));
             String username = req.getParameter("username");
             String fullname = req.getParameter("fullname");
-            String password = req.getParameter("password");
             String email = req.getParameter("email");
             boolean isAdmin = Boolean.parseBoolean(req.getParameter("isAdmin"));
-
+            if(!isValidName(fullname)) {
+            	req.setAttribute("errorMessage", "Fullname is not valid!");
+    			req.getRequestDispatcher("/view/user/regiser.jsp").forward(req, resp);
+    			return;
+            }
+            if(!isValidGmail(email)) {
+    			req.setAttribute("errorMessage", "Invalid email!");
+    			req.getRequestDispatcher("/view/user/regiser.jsp").forward(req, resp);
+    			return;
+    		}
             User user = userService.findById(id);
             if (user != null) {
                 user.setUsername(username);
                 user.setFullname(fullname);
-                String encryptedmessage =  EncryptDecrypt.encrypt(password);
-                user.setPassword(encryptedmessage);
                 user.setEmail(email);
                 user.setIsAdmin(isAdmin);
                 user.setIsActive(Boolean.TRUE);
                 userService.update(user);
                 req.setAttribute("message", "User updated successfully!");
             } else {
-                req.setAttribute("error", "User not found!");
+                req.setAttribute("errorMessage", "User not found!");
+                doGetManagement(req, resp);
+                return;
             }
         } catch (Exception e) {
-            req.setAttribute("error", "Failed to update user: " + e.getMessage());
+            req.setAttribute("errorMessage", "Failed to update user: " + e.getMessage());
+            doGetManagement(req, resp);
+            return;
         }
 		resp.sendRedirect(req.getContextPath() + "/user/management");
     }
@@ -339,12 +354,35 @@ public class UserController extends HttpServlet{
             User user = userService.findById(id);
             userService.delete(user.getUsername());
         } catch (Exception e) {
-            req.setAttribute("error", "Failed to delete user: " + e.getMessage());
+            req.setAttribute("errorMessage", "Failed to delete user: " + e.getMessage());
+            doGetManagement(req, resp);
+            return;
         }
         resp.sendRedirect(req.getContextPath() + "/user/management");
     }
 
     private void doPostReset(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	resp.sendRedirect(req.getContextPath() + "/user/management");
+    }
+    
+    public static boolean isValidName(String name) {
+        String regex = "^[A-Za-z]+([\\s][A-Za-z]+)*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(name);
+        return matcher.matches();
+    }
+    
+	public static boolean isValidGmail(String email) {
+	    String regex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+	    Pattern pattern = Pattern.compile(regex);
+	    Matcher matcher = pattern.matcher(email);
+	    return matcher.matches();
+	}
+	
+	public static boolean isValidPassword(String password) {
+        String regex = "^.{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 }

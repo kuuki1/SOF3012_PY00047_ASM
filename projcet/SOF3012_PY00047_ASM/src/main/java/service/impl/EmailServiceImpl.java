@@ -54,14 +54,14 @@ public class EmailServiceImpl implements EmailService{
 	}
 
 	@Override
-	public void sendEmailShare(String localhost, ServletContext context, Share recipent, String type) {
+	public void sendEmailShare(String localhost, ServletContext context, Share recipent, String type, User users) {
 		String host = context.getInitParameter("host");
         String port = context.getInitParameter("port");
         String user = context.getInitParameter("user");
         String pass = context.getInitParameter("pass");
         String href = localhost.split("id=")[1].split("&")[0];
         Video video = videoService.findByHref(href);
-
+        
         try {
 			String content = null;
 			String subject = null;
@@ -69,8 +69,10 @@ public class EmailServiceImpl implements EmailService{
 				case "share":
 					subject = EMAIL_SHARE_VIDEOS;
 					
-					content = "Watch: '"+ video.getTitle() + "'" +
-							"\n\nLink: " + localhost;
+					content = "You have been shared a video:" +
+							  "\n\nTitle: '"+ video.getTitle() + "'" +
+							  "\nLink: " + localhost +
+							  "\n\nShared by: " + users.getFullname();
 					break;
 				default:
 					subject = "JACKER";

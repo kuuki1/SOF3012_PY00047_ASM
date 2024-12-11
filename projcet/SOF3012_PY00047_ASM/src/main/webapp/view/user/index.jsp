@@ -9,16 +9,15 @@
     <title>Video Catalog</title>
     <%@ include file="/common/head.jsp" %>
     <style>
-        /* CSS tùy chỉnh cho thẻ video */
         .tm-catalog-item-list {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: center;
+            justify-content: start;
         }
 
         .tm-catalog-item {
-            flex: 0 0 calc(33.33% - 20px);
+            flex: 1 1 calc(33.33% - 20px);
             max-width: calc(33.33% - 20px);
             display: flex;
             flex-direction: column;
@@ -80,6 +79,20 @@
         .tm-tex-gray-light {
             color: #adb5bd;
         }
+
+        @media (max-width: 768px) {
+            .tm-catalog-item {
+                flex: 1 1 calc(50% - 20px);
+                max-width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .tm-catalog-item {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -96,7 +109,6 @@
                         </div>
                     </div>
 
-                    <!-- Hiển thị danh sách video -->
                     <div class="tm-catalog-item-list">
                         <c:forEach items="${videos}" var="video">
                             <div class="tm-catalog-item">
@@ -119,12 +131,13 @@
                         </c:forEach>
                     </div>
 
-                    <!-- Phân trang cho danh sách video -->
                     <div>
                         <ul class="nav tm-paging-links">
-                        	<c:forEach varStatus="i" begin="1" end="${maxPage}">
-                        		<li class="nav-item ${currentPage == i.index ? 'active' : ''}"><a href="/SOF3012_PY00047_ASM/index?page=${i.index}" class="nav-link tm-paging-link">${i.index}</a></li>
-                        	</c:forEach>
+                            <c:forEach varStatus="i" begin="1" end="${maxPage}">
+                                <li class="nav-item ${currentPage == i.index ? 'active' : ''}">
+                                    <a href="/SOF3012_PY00047_ASM/index?page=${i.index}" class="nav-link tm-paging-link">${i.index}</a>
+                                </li>
+                            </c:forEach>
                         </ul>
                     </div>
                 </main>

@@ -3,6 +3,8 @@ package controller;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -72,7 +74,14 @@ public class ShareController extends HttpServlet{
         User currentUser = (User) req.getSession().getAttribute(SessionAttr.CURRENT_USER);
 		String videoHref = req.getParameter("videoHref");
 		String email = req.getParameter("email");
+		if(!isValidGmail(email)) {
+			System.out.println("Email sai dinh dang");
+			req.setAttribute("errorMessage", "Invalid email!");
+			resp.sendRedirect(req.getContextPath() + "/video?action=watch&id=" + videoHref);
+			return;
+		}
 		if (currentUser == null || email == null || email.trim().isEmpty()) {
+			
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Invalid email!");
             return;
@@ -81,7 +90,7 @@ public class ShareController extends HttpServlet{
 		Share share = new Share(currentUser, video, new Timestamp(System.currentTimeMillis()), email);
 		String localhost = href + "" + video.getVideoUrl();
 		shareService.create(share);
-		emailService.sendEmailShare(localhost, getServletContext(), share, "share");
+		emailService.sendEmailShare(localhost, getServletContext(), share, "share", currentUser);
 		videoService.incrementShareCount(video);
 		resp.sendRedirect(req.getContextPath() + "/video?action=watch&id=" + videoHref);
 	}
@@ -105,5 +114,12 @@ public class ShareController extends HttpServlet{
 	        e.printStackTrace();
 	        resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to filter shares by video.");
 	    }
+	}
+	
+	public static boolean isValidGmail(String email) {
+	    String regex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+	    Pattern pattern = Pattern.compile(regex);
+	    Matcher matcher = pattern.matcher(email);
+	    return matcher.matches();
 	}
 }

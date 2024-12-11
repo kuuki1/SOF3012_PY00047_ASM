@@ -16,11 +16,11 @@ body {
 }
 
 .container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        
 .header {
     display: flex;
     justify-content: space-between;
@@ -171,20 +171,21 @@ table tr:hover {
     transition: background-color 0.3s;
 }
 
-.menu {
+#menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
     margin-bottom: 20px;
 }
 
 .menu-button {
-    padding: 12px 25px;
+    padding: 10px 20px;
     background-color: #007bff;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 10px;
-    font-size: 1rem;
+    transition: background 0.3s;
 }
 
 .menu-button:hover {
@@ -192,7 +193,7 @@ table tr:hover {
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     .header {
         flex-direction: column;
         align-items: flex-start;
@@ -202,11 +203,6 @@ table tr:hover {
     .btn-search {
         width: 100%;
         margin-top: 10px;
-    }
-
-    .menu-button {
-        width: 100%;
-        margin-bottom: 10px;
     }
 }
 </style>
@@ -222,8 +218,12 @@ table tr:hover {
             <button class="menu-button" onclick="navigateToVideoManagement()">Video Management</button>
             <button class="menu-button" onclick="navigateToUserManagement()">User Management</button>
             <button class="menu-button" onclick="navigeteToCategoryManagement()">Category Management</button>
-            <button class="menu-button" onclick="navigeteToShareManagement()">Share Management</button>
+            <button class="menu-button" onclick="navigeteToShareManagement()">Share Statistics</button>
+            <button class="menu-button" onclick="navigeteToFavoriteStatistics()">Favorites Statistics</button>
+            <button class="menu-button" onclick="navigeteToFavoriteUsers()">Favorites Users Statistics</button>
         </div>
+        
+        <br></br>
     
 
     <h2>Videos Management</h2>
@@ -237,7 +237,7 @@ table tr:hover {
             <input type="text" name="title" value="${video != null ? video.title : ''}">
 
             <label>Video URL (YouTube/Vimeo):</label>
-            <input type="text" name="videoUrl" value="${video != null ? video.videoUrl : ''}" placeholder="https://www.youtube.com/watch?v=example" readonly>
+            <input type="text" name="videoUrl" value="${video != null ? video.videoUrl : ''}" placeholder="https://www.youtube.com/watch?v=example" readonly><!-- readonly -->
 
             <label>Poster URL:</label>
             <input type="file" name="poster" value="${video != null ? video.poster : ''}" placeholder="URL of poster image">
@@ -299,6 +299,12 @@ table tr:hover {
         }
         function navigeteToShareManagement() {
         	window.location.href = '/SOF3012_PY00047_ASM/share/management';	
+        }
+        function navigeteToFavoriteStatistics() {
+        	window.location.href = '/SOF3012_PY00047_ASM/favorite/statistics';	
+        }
+        function navigeteToFavoriteUsers() {
+        	window.location.href = '/SOF3012_PY00047_ASM/favorite/user/statistics?videoId=1';	
         }
     </script>
 </body>

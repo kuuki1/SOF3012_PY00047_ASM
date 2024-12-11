@@ -9,77 +9,77 @@
     <title>Videos by Category</title>
     <%@ include file="/common/head.jsp" %>
     <style>
-        .tm-catalog-item-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
+  .tm-catalog-item-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* Khoảng cách giữa các thẻ */
+    justify-content: space-between; /* Căn đều thẻ trong hàng */
+}
 
-        .tm-catalog-item {
-            flex: 1 1 calc(33.33% - 20px);
-            max-width: calc(33.33% - 20px);
-            display: flex;
-            flex-direction: column;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+.tm-catalog-item {
+    flex: 0 0 calc(33.33% - 1.5rem); /* Đảm bảo mỗi thẻ chiếm 1/3 hàng */
+    max-width: calc(33.33% - 1.5rem);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-        .tm-catalog-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        }
+.tm-catalog-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
 
-        .tm-thumbnail-container {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
+.tm-thumbnail-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
 
-        .tm-catalog-item-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.tm-catalog-item-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-        .tm-img-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 48px;
-            color: white;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
+.tm-img-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
-        .tm-thumbnail-container:hover .tm-img-overlay {
-            opacity: 1;
-        }
+.tm-thumbnail-container:hover .tm-img-overlay {
+    opacity: 1;
+}
 
-        .tm-catalog-item-description {
-            padding: 15px;
-            background-color: #f8f9fa;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+.tm-catalog-item-description {
+    padding: 15px;
+    background-color: #f8f9fa;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
-        .tm-text-primary {
-            color: #007bff;
-        }
+.tm-text-primary {
+    color: #007bff;
+}
 
-        .tm-text-gray {
-            color: #6c757d;
-        }
+.tm-text-gray {
+    color: #6c757d;
+}
 
-        .tm-tex-gray-light {
-            color: #adb5bd;
-        }
+.tm-tex-gray-light {
+    color: #adb5bd;
+}
     </style>
 </head>
 
@@ -117,11 +117,14 @@
                             </div>
                         </c:forEach>
                     </div>
-					<div>
+
+                    <div>
                         <ul class="nav tm-paging-links">
-                        	<c:forEach varStatus="i" begin="1" end="${maxPage}">
-                        		<li class="nav-item ${currentPage == i.index ? 'active' : ''}"><a href="/SOF3012_PY00047_ASM/category/${category.id}?page=${i.index}" class="nav-link tm-paging-link">${i.index}</a></li>
-                        	</c:forEach>
+                            <c:forEach varStatus="i" begin="1" end="${maxPage}">
+                                <li class="nav-item ${currentPage == i.index ? 'active' : ''}">
+                                    <a href="/SOF3012_PY00047_ASM/category/${category.id}?page=${i.index}" class="nav-link tm-paging-link">${i.index}</a>
+                                </li>
+                            </c:forEach>
                         </ul>
                     </div>
                 </main>

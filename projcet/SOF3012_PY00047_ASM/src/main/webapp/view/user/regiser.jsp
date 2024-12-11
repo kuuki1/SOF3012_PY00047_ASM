@@ -16,7 +16,7 @@
 	    <div class="row">
 	        <div class="col-lg-12 mb-12">
 	        	<br><h2>Sign up</h2><br>
-	            <form id="contact-form" action="regiser" method="POST" class="tm-contact-form">
+	            <form id="contact-form" action="register" method="POST" class="tm-contact-form">
 	              <div class="form-group">
 	                <input type="text" name="Username" class="form-control rounded-0" placeholder="Username" required="" />
 	              </div>

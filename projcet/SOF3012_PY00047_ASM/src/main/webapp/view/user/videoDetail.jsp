@@ -226,6 +226,15 @@
                         <div class="d-flex justify-content-between">
                             <span><strong>Views:</strong> ${video.viewCount}</span>
                             <span><strong>Comments:</strong> ${video.commentCount}</span>
+                            <c:choose>
+								<c:when test="${not empty sessionScope.currentUser}">
+									
+								</c:when>
+								<c:otherwise>
+									<span><strong>Like:</strong> ${video.likeCount}</span>
+								</c:otherwise>
+							</c:choose>
+                            
                         </div>
                         <br>
 
@@ -256,6 +265,11 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary">Send</button>
                             </form>
+                            <br>
+                            <c:if test="${not empty errorMessage}">
+								<div style="color: red; text-align: center; margin-bottom: 20px;">
+									${errorMessage}</div>
+							</c:if>
                         </div>
                     </div>
 
